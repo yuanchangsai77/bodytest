@@ -1,12 +1,17 @@
-## 两种方式运行python脚本
-# 如果使用uv环境
-uv run python test.py
+## 运行 Python 脚本
 
-# 如果直接使用.venv环境的python
+确保已经激活项目的虚拟环境后直接运行:
+
+```bash
 python3 test.py
+```
 
+## 管理虚拟环境
+
+```bash
+# 激活项目的虚拟环境
+source .venv/bin/activate
 
 # 退出当前环境
 deactivate
-# 激活项目的虚拟环境
-source .venv/bin/activate
+```

@@ -65,7 +65,7 @@
 
 4. **测试配置**:
    ```bash
-   uv run python test_llm_api.py
+   python test_llm_api.py
    ```
 
 ## 💡 快速开始建议
