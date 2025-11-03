@@ -35,7 +35,9 @@
 
 3. 安装依赖:
    ```bash
-   uv sync
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -e .
    ```
 
 4. 运行示例:
