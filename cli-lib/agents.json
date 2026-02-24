@@ -1,0 +1,6 @@
+{
+  "task_planner": {
+    "description": "根据用户需求选择工具并触发多轮执行",
+    "system_prompt_path": "prompt/任务规划师.md"
+  }
+}

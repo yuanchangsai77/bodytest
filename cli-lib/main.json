@@ -1,0 +1,14 @@
+{
+  "tools": [
+    {
+      "name": "project_scaffold",
+      "description": "根据需求创建可运行的项目目录与基础文件",
+      "doc_path": "docs/tools/project_scaffold.md"
+    },
+    {
+      "name": "list_files",
+      "description": "查看当前项目结构与关键文件",
+      "doc_path": "docs/tools/list_files.md"
+    }
+  ]
+}
