@@ -1,23 +1,58 @@
 # bodytest 项目概览
 
-这是一个以 **多模型 LLM API 调用** 为核心的 Python 项目，目前包含：
+这是一个以 **多模型 LLM API 调用 + 多轮 Agent 执行** 为核心的 Python 项目。
 
-- `llmapiconfig/`：统一封装 OpenAI / Claude / Gemini / 通义千问 / 智谱 的配置与客户端。
-- `shell/pyshell/`：在 shell 场景中调用 LLM 的示例与 Agent 框架。
-- `prompt/`：用于 Agent 的系统提示词目录（当前文件存在，但内容尚未完善）。
-- `API_SETUP.md`：API 密钥申请与 `.env` 配置说明。
+## 现在可跑通的最小链路
 
-## 当前完整度（简评）
+1. `main.py` 作为统一入口，接收 `--instruction`。
+2. `shell/pyshell/agent_framework.py` 读取：
+   - `cli-lib/agents.json`（agent 注册）
+   - `cli-lib/main.json`（工具注册）
+   - `prompt/*.md`（系统提示词）
+3. 通过 `llmapiconfig/` 调用选定的大模型。
+4. 模型返回 JSON 命令后由执行器执行并返回结果。
 
-项目处于 **“基础能力可用、工程化未完成”** 阶段：
+## 目录结构（建议/当前）
 
-- ✅ 已有可复用的配置加载与多厂商 API 调用逻辑。
-- ✅ 已有 shell 示例和 agent 执行框架雏形。
-- ⚠️ 顶层入口 `main.py` 仍为占位示例。
-- ⚠️ `prompt/*.md` 当前为空，Agent 依赖的提示词尚未落地。
-- ⚠️ 框架代码引用了 `cli-lib/agents.json`、`cli-lib/main.json` 等文件，仓库中暂未提供。
+```text
+bodytest/
+├─ main.py                       # CLI统一入口
+├─ cli-lib/
+│  ├─ agents.json                # agent注册
+│  └─ main.json                  # 工具注册
+├─ prompt/
+│  ├─ 任务规划师.md
+│  ├─ CLI命令生成器.md
+│  ├─ CLI工具执行引擎.md
+│  ├─ 交互与意图分析师.md
+│  └─ 状态监控反馈机.md
+├─ docs/tools/
+│  ├─ project_scaffold.md
+│  └─ list_files.md
+├─ shell/pyshell/
+│  ├─ agent_framework.py
+│  └─ api_client.py
+└─ llmapiconfig/
+   ├─ settings.py
+   └─ llm_client.py
+```
 
-## 快速使用
+## 哪些是“必须”的
+
+- `llmapiconfig/`：API 配置与请求封装（必须）
+- `shell/pyshell/agent_framework.py`：多轮调度与执行（必须）
+- `cli-lib/*.json`：agent/tool 注册（必须）
+- `prompt/*.md`：约束 LLM 返回结构化 JSON（必须）
+- `docs/tools/*.md`：给命令生成器提供工具细节（建议必须）
+- `main.py`：可执行入口（必须）
+
+## 哪些在最小可跑通链路里可暂缓
+
+- 复杂的多 Agent 编排（可先只保留 `task_planner`）
+- 前端界面（当前无需）
+- 数据库存储、消息队列（当前无需）
+
+## 快速开始
 
 ### 1) 安装依赖
 
@@ -31,27 +66,13 @@ pip install -e .
 
 ```bash
 cp llmapiconfig/.env.example .env
-# 编辑 .env，至少填写一个可用提供商的 API KEY（推荐 Gemini）
+# 编辑 .env，至少填写一个可用 provider 的 API KEY
 ```
 
-可参考：`API_SETUP.md`。
-
-### 3) 直接调用 LLM 客户端
-
-```python
-import asyncio
-from llmapiconfig.llm_client import simple_chat
-
-async def run():
-    print(await simple_chat("你好，请做个自我介绍"))
-
-asyncio.run(run())
-```
-
-### 4) 运行 shell 示例
+### 3) 运行最小链路
 
 ```bash
-python shell/pyshell/llm_example_optimized.py
+python main.py --instruction "请帮我查看当前项目文件结构"
 ```
 
-> 说明：如果要跑 `agent_framework.py` 的完整多轮流程，需要补齐 prompt 内容与 `cli-lib` 配置文件。
+> 若未配置 API KEY，会在调用模型阶段失败；但项目结构与调用链路已完整。
