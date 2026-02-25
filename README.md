@@ -29,11 +29,13 @@
    - 做 git reality check
 3. 通过 `llmapiconfig/` 调用选定的大模型。
 
-## 目录结构（当前）
+## 目录结构（优化后）
 
 ```text
 bodytest/
 ├─ main.py
+├─ examples/
+│  └─ llm_example_optimized.py
 ├─ state/
 │  ├─ task_graph.json
 │  ├─ step_log.json
@@ -42,6 +44,7 @@ bodytest/
 │  └─ memory_snapshot.json
 ├─ docs/
 │  ├─ tools/
+│  ├─ notes/
 │  └─ ai_os/
 │     └─ state_schema.md
 ├─ shell/pyshell/
@@ -82,3 +85,9 @@ python main.py --runtime legacy --instruction "请帮我查看当前项目文件
 ```
 
 > 若未配置 API KEY，会在调用模型阶段失败；但 AI OS 状态目录与执行骨架已可用。
+
+## 目录治理建议
+
+- **运行时核心目录**：`main.py`、`shell/`、`llmapiconfig/`、`cli-lib/`、`prompt/`、`state/`。
+- **非核心但有价值**：`docs/`、`examples/`。
+- **建议避免把示例脚本放在运行时包目录内**，否则容易与生产模块混淆；当前已将示例移至 `examples/`。
