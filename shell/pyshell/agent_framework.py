@@ -9,12 +9,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-# Add current dir for importing api_client
-current_dir = os.path.dirname(os.path.abspath(__file__))
-if current_dir not in sys.path:
-    sys.path.insert(0, current_dir)
-
-from api_client import MultiModelAPIClient
+from .api_client import MultiModelAPIClient
 
 # Global API client instance
 api_client: MultiModelAPIClient | None = None
